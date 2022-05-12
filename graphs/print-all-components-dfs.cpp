@@ -3,29 +3,17 @@ using namespace std;
 
 #define N 100005
 
-vector <bool> vis;
+int vis[N];
 vector <int> adj[N];
 
-vector <int> bfs(int s) {
-  queue <int> q;
-  vector <int> x;
-  q.push(s);
+void dfs(int s, vector <int> &comp) {
   vis[s] = 1;
-
-  while(!q.empty()) {
-    int f = q.front();
-    q.pop();
-
-    for(auto i : adj[f]) {
-      if(!vis[i]) {
-        vis[i] = 1;
-        q.push(i);
-        x.push_back(i);
-      }
+  comp.push_back(s);
+  for(auto i : adj[s]) {
+    if(!vis[i]) {
+      dfs(i, comp);
     }
-  }
-
-  return x;
+  }  
 }
 
 int main() {
@@ -44,11 +32,12 @@ int main() {
 
   for(int i = 1; i <= n; i++) {
     if(!vis[i]) {
-      vector <int> x = bfs(i);
-      for(auto i : x) {
-        cout << i << ' ';
+      vector <int> comp;
+      dfs(i, comp);
+      for(auto j : comp) {
+        cout << j << ' ';
       }
-      cout << '\n';
+      cout << endl;
     }
   }
 
